@@ -1,4 +1,4 @@
-package gratte
+package pear2pear
 
 object Document {
   case class Id(unId: String) extends AnyVal
@@ -23,7 +23,7 @@ object Document {
 }
 
 case class Document(
-    id: Document.Id,
+    id: Option[Document.Id],
     scannedText: Option[String],
     tags: Set[Document.Tag],
     date: Document.Date,

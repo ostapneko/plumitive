@@ -1,10 +1,13 @@
-package gratte.http
+package pear2pear.http
 
 import akka.http.scaladsl.server.Directives._
-import gratte.http.PathMatchers._
+import pear2pear.api.API
+import pear2pear.http.PathMatchers._
+
+import scala.concurrent.ExecutionContext
 
 object Router {
-  lazy val route =
+  def route(implicit api: API, ec: ExecutionContext) =
     get {
       path("documents") {
         complete("TODO: document query")
