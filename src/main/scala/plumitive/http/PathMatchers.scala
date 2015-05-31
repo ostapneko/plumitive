@@ -1,7 +1,7 @@
-package pear2pear.http
+package plumitive.http
 
 import akka.http.scaladsl.server.{PathMatcher, PathMatcher1}
-import pear2pear.Document
+import plumitive.Document
 
 object PathMatchers {
   val DocumentIdMatcher: PathMatcher1[Document.Id] =

@@ -1,8 +1,10 @@
-package pear2pear.http
+package plumitive.http
 
 import akka.http.scaladsl.server.Directives._
-import pear2pear.api.API
-import pear2pear.http.PathMatchers._
+import plumitive.core.API
+import plumitive.http.PathMatchers._
+import Marshallers._
+import Serializers._
 
 import scala.concurrent.ExecutionContext
 
@@ -13,7 +15,8 @@ object Router {
         complete("TODO: document query")
       } ~
       path("document" / DocumentIdMatcher) { docId =>
-        complete(s"TODO: Show document with id ${docId.unId}")
+        val doc = api.show(docId)
+        complete(doc)
       }
     } ~
     post {

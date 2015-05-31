@@ -1,4 +1,4 @@
-package pear2pear
+package plumitive
 
 object Document {
   case class Id(unId: String) extends AnyVal
@@ -28,5 +28,5 @@ case class Document(
     tags: Set[Document.Tag],
     date: Document.Date,
     sender: Document.Sender,
-    recipient: Document.Recipient
+    recipients: Set[Document.Recipient]
   )
