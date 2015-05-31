@@ -1,13 +1,13 @@
-package plumitive.core
+package plumitive.metadata
 
-import plumitive.{ImageBytesBase64, Document}
+import plumitive.Document
+import plumitive.core.SearchQuery
 
 import scala.concurrent.Future
 
-trait API {
+trait Store {
   def query(searchQuery: SearchQuery): Future[Seq[Document]]
-  def show(docId: Document.Id): Future[Document]
-  def extractText(bytes: ImageBytesBase64): Future[String]
+  def find(docId: Document.Id): Future[Document]
   def put(doc: Document): Future[Unit]
   def delete(docId: Document.Id): Future[Unit]
 

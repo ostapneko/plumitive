@@ -1,17 +1,14 @@
 package plumitive
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.stream.ActorFlowMaterializer
+import akka.http.scaladsl._
 import plumitive.core.APIImpl
 import plumitive.http.Router
 
 object Server {
   def main (args: Array[String]) {
-    implicit val as = ActorSystem()
-    implicit val fm = ActorFlowMaterializer()
     implicit val api = APIImpl
-    implicit val ec = as.dispatcher
+    implicit val as = Settings.actorSystem
+    implicit val fm = Settings.flowMaterializer
 
     Http().bindAndHandle(Router.route, "localhost", 8080)
   }

@@ -6,10 +6,8 @@ import plumitive.http.PathMatchers._
 import Marshallers._
 import Serializers._
 
-import scala.concurrent.ExecutionContext
-
 object Router {
-  def route(implicit api: API, ec: ExecutionContext) =
+  def route(implicit api: API) =
     get {
       path("documents") {
         complete("TODO: document query")
@@ -20,7 +18,7 @@ object Router {
       }
     } ~
     post {
-      path("extract_metadata") {
+      path("documents" / "preview") {
         complete("TODO: extract submitted info metadata")
       }
     } ~

@@ -3,21 +3,21 @@ package plumitive.core
 import plumitive.Document._
 import plumitive.{Document, Fixtures}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 object TestAPI extends API {
-  override def query(searchQuery: SearchQuery)(implicit ec: ExecutionContext): Future[Seq[Document]] = Future { Seq[Document]() }
+  override def query(searchQuery: SearchQuery): Future[Seq[Document]] = Future { Seq[Document]() }
 
-  override def extractMetadata(implicit ec: ExecutionContext): Future[Document] = Future.failed(new DocumentNotFound)
+  override def extractText: Future[Document] = Future.failed(new DocumentNotFound)
 
-  override def put(implicit ec: ExecutionContext): Future[Unit] = {
-    val err = new DocumentCreation("Not implemented yet")
+  override def put(doc: Document): Future[Unit] = {
+    val err = new DocumentCreationException("Not implemented yet")
     Future.failed(err)
   }
 
-  override def delete(docId: Id)(implicit ec: ExecutionContext): Future[Unit] = Future.failed(new DocumentNotFound)
+  override def delete(docId: Id): Future[Unit] = Future.failed(new DocumentNotFound)
 
-  override def show(docId: Id)(implicit ec: ExecutionContext): Future[Document] = {
+  override def show(docId: Id): Future[Document] = {
     Future { Fixtures.testDocument }
   }
 }
