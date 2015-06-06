@@ -3,13 +3,16 @@ package plumitive.core
 import java.nio.file.Path
 
 import plumitive.Document.Id
+import plumitive.metadata.SQLiteStore
 import plumitive.{ImageBytesBase64, Document, Settings}
 
 import scala.concurrent.Future
 
 object APIImpl extends API {
   implicit val ec = Settings.executionContext
-  override def query(searchQuery: SearchQuery): Future[Seq[Document]] = Future { Seq[Document]() }
+  override def query(searchQuery: SearchQuery): Future[Seq[Document]] = {
+    SQLiteStore.query(searchQuery)
+  }
 
   override def extractText(bytes: ImageBytesBase64): Future[String] = Future.failed(new DocumentNotFound)
 
