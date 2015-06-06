@@ -1,1 +1,1 @@
-CREATE VIRTUAL TABLE documents using fts4(title,text,from,to,date,tags,tokenize=porter);
+CREATE VIRTUAL TABLE documents USING fts4(id,title,scanned_text,sender,recipients,year,month,tags,tokenize=porter);
