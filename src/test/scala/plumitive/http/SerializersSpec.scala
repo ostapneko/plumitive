@@ -11,6 +11,7 @@ class SerializersSpec extends FreeSpec {
       """
         |{
         |  "id": "1234",
+        |  "title": "title",
         |  "scannedText": "this is a scanned text",
         |  "tags": ["tag1", "tag2"],
         |  "month": "January",

@@ -1,8 +1,9 @@
 package plumitive.http
 
 import akka.http.scaladsl.server.Directives._
+import akka.stream.ActorFlowMaterializer
 import plumitive.Settings
-import plumitive.core.API
+import plumitive.core.{SearchQuery, API}
 import plumitive.http.Marshallers._
 import plumitive.http.PathMatchers._
 import Serializers.DocumentEncodeJson
@@ -11,11 +12,13 @@ import Settings._
 object Router {
   def route(implicit api: API) = {
     implicit val ec = Settings.executionContext
+    implicit val fm = ActorFlowMaterializer()
 
     staticRoute ~
       get {
         path("documents") {
-          complete("TODO: document query")
+          val docs = api.query(SearchQuery(Seq(""), Set(), None))
+          complete(docs.map(_.toList))
         } ~
           path("document" / DocumentIdMatcher) { docId =>
             val doc = api.show(docId).map(_._1)
