@@ -3,8 +3,8 @@ package plumitive.core
 import java.nio.file.Path
 
 import plumitive.Document.Id
-import plumitive.metadata.SQLiteStore
-import plumitive.{ImageBytesBase64, Document, Settings}
+import plumitive.metadata.{TesseractTextExtractor, SQLiteStore}
+import plumitive.{ImageBytes, Document, Settings}
 
 import scala.concurrent.Future
 
@@ -14,9 +14,10 @@ object APIImpl extends API {
     SQLiteStore.query(searchQuery)
   }
 
-  override def extractText(bytes: ImageBytesBase64): Future[String] = Future.failed(new DocumentNotFound)
+  override def extractText(bytes: ImageBytes): Future[String] =
+    TesseractTextExtractor.extract(bytes)
 
-  override def put(doc: Document, image: Option[ImageBytesBase64]): Future[Unit] = {
+  override def put(doc: Document, image: Option[ImageBytes]): Future[Unit] = {
     val err = new DocumentCreationException("Not implemented yet")
     Future.failed(err)
   }

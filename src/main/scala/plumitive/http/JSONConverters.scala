@@ -1,9 +1,10 @@
 package plumitive.http
 
-import argonaut._, Argonaut._
+import argonaut.Argonaut._
+import argonaut._
 import plumitive.Document
 
-object Serializers {
+object JSONConverters {
   implicit def DocumentEncodeJson: EncodeJson[Document] =
     EncodeJson( d =>
       ("id" := d.id.unId) ->:
@@ -15,5 +16,12 @@ object Serializers {
       ("sender" := d.sender.unSender) ->:
       ("recipients" := d.recipients.map(_.unRecipient)) ->:
       jEmptyObject
+    )
+
+  implicit def DecodeImagePayload: DecodeJson[Either[String, ImagePayload]] =
+    DecodeJson( c =>
+      for {
+        base64Str <- (c --\ "image").as[String]
+      } yield ImagePayload.fromBase64Payload(base64Str)
     )
 }

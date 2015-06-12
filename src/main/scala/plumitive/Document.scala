@@ -29,6 +29,22 @@ object Document {
       case 12 => December
       case _ => throw new RuntimeException(s"Month $int does not exist")
     }
+
+    def fromName(name: String): Option[Month] = name.toLowerCase match {
+      case "january"   => Some(January)
+      case "february"  => Some(February)
+      case "march"     => Some(March)
+      case "april"     => Some(April)
+      case "may"       => Some(May)
+      case "june"      => Some(June)
+      case "july"      => Some(July)
+      case "august"    => Some(August)
+      case "september" => Some(September)
+      case "october"   => Some(October)
+      case "november"  => Some(November)
+      case "december"  => Some(December)
+      case _ => None
+    }
   }
 
   case object January extends Month {

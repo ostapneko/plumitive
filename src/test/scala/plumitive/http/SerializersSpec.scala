@@ -2,7 +2,7 @@ package plumitive.http
 
 import argonaut._, Argonaut._
 import org.scalatest.FreeSpec
-import Serializers.DocumentEncodeJson
+import JSONConverters.DocumentEncodeJson
 import plumitive.Fixtures
 
 class SerializersSpec extends FreeSpec {

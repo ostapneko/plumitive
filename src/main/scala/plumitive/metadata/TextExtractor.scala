@@ -1,6 +1,6 @@
 package plumitive.metadata
 
-import plumitive.ImageBytesBase64
+import plumitive.ImageBytes
 
 import scala.concurrent.Future
 
@@ -9,5 +9,5 @@ object TextExtractor {
 }
 
 trait TextExtractor {
-  def extract(bytes: ImageBytesBase64): Future[String]
+  def extract(bytes: ImageBytes): Future[String]
 }

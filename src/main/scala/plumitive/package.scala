@@ -1,3 +1,3 @@
 package object plumitive {
-  type ImageBytesBase64 = Array[Byte]
+  type ImageBytes = Array[Byte]
 }

@@ -3,11 +3,12 @@ package plumitive.http
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorFlowMaterializer
 import plumitive.Settings
-import plumitive.core.{SearchQuery, API}
+import plumitive.Settings._
+import plumitive.core.{API, SearchQuery}
+import plumitive.http.JSONConverters._
 import plumitive.http.Marshallers._
+import plumitive.http.Unmarshallers._
 import plumitive.http.PathMatchers._
-import Serializers.DocumentEncodeJson
-import Settings._
 
 object Router {
   def route(implicit api: API) = {
@@ -26,8 +27,14 @@ object Router {
           }
       } ~
       post {
-        path("documents" / "preview") {
-          complete("TODO: extract submitted info metadata")
+        path("documents" / "extract-text") {
+          entity(as[Either[String, ImagePayload]]) {
+            case Right(ImagePayload(bytes, _)) =>
+              val extraction = api.extractText(bytes)
+              complete(extraction)
+            case Left(msg) =>
+              complete("TODO")
+          }
         }
       } ~
       (put | post) {
@@ -45,13 +52,13 @@ object Router {
   private val staticRoute =
     get {
       pathSingleSlash {
-        getFromResource(indexFile)
+        getFromFile(indexFile)
       } ~
         pathPrefix("css") {
-          getFromResourceDirectory(cssDir)
+          getFromDirectory(cssDir)
         } ~
         pathPrefix("js") {
-          getFromResourceDirectory(jsDir)
+          getFromDirectory(jsDir)
         }
     }
 }
