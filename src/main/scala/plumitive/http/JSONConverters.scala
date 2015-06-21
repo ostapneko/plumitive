@@ -9,7 +9,7 @@ import scala.util.Try
 object JSONConverters {
   implicit def DocumentEncodeJson: EncodeJson[Document] =
     EncodeJson( d =>
-      ("id" := d.id.unId) ->:
+      ("id" := d.id.map(_.unId)) ->:
       ("title" := d.title.unTitle) ->:
       ("scannedText" := d.scannedText) ->:
       ("tags" := d.tags.map(_.unTag)) ->:

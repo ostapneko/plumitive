@@ -5,7 +5,7 @@ import plumitive.Document._
 object Fixtures {
   val testDocument =
     Document(
-      id = Id("1234"),
+      id = Some(Id("1234")),
       title = Title("title"),
       scannedText = Some("this is a scanned text"),
       tags = Set(Tag("tag1"), Tag("tag2")),

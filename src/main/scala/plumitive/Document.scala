@@ -97,12 +97,13 @@ object Document {
   }
 }
 
+import Document._
 case class Document(
-    id: Document.Id,
-    title: Document.Title,
+    id: Option[Id],
+    title: Title,
     scannedText: Option[String],
-    tags: Set[Document.Tag],
-    date: Document.Date,
-    sender: Document.Sender,
-    recipients: Set[Document.Recipient]
+    tags: Set[Tag],
+    date: Date,
+    sender: Sender,
+    recipients: Set[Recipient]
   )
