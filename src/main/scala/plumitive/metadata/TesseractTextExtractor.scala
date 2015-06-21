@@ -8,6 +8,8 @@ import plumitive.http.ImagePayload
 
 import scala.concurrent.Future
 
+import scala.sys.process._
+
 object TesseractTextExtractor extends TextExtractor {
   implicit val ec = Settings.executionContext
 
@@ -32,14 +34,16 @@ object TesseractTextExtractor extends TextExtractor {
   }
 
   def saveImage(image: ImagePayload): Path = {
-    Files.createDirectories(Settings.docDir)
+    Files.createDirectories(Settings.tmpDir)
     val path = tempPath(image)
     Files.write(path, image.bytes)
     path
   }
 
   def runTesseract(path: Path): String = {
-    "example"
+    val buf = new StringBuffer()
+    Seq("tesseract", path.toString, "stdout") ! ProcessLogger(buf.append(_))
+    buf.toString
   }
 }
 

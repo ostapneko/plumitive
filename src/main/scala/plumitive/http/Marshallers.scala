@@ -11,7 +11,7 @@ object Marshallers {
     val ct = ContentTypes.`application/json`
 
     Marshaller.withFixedCharset(mt, HttpCharsets.`UTF-8`) { t =>
-      HttpEntity(ct, t.asJson.toString())
+      HttpEntity(ct, t.asJson.nospaces)
     }
   }
 }

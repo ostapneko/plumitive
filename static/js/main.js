@@ -3,10 +3,10 @@
   var preview = document.getElementById('preview');
 
   var postPayload = function(obj) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "/documents/extract-text");
-    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlhttp.send(JSON.stringify(obj));
+    var req = new XMLHttpRequest();
+    req.open("POST", "/documents/extract-text");
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.send(JSON.stringify(obj));
   };
 
   var loadImage = function(e) {

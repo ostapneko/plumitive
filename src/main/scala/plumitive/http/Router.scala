@@ -2,6 +2,8 @@ package plumitive.http
 
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorFlowMaterializer
+import argonaut._
+import Argonaut._
 import plumitive.Settings
 import plumitive.Settings._
 import plumitive.core.{API, SearchQuery}
@@ -32,8 +34,11 @@ object Router {
         path("documents" / "extract-text") {
           entity(as[Try[ImagePayload]]) {
             case Success(image) =>
-              val extraction = api.extractText(image)
-              complete(extraction)
+              val extracted = api.extractText(image)
+              val resp = extracted.map { ext =>
+                Json("extractedText" := ext)
+              }
+              complete(resp)
             case Failure(err) =>
               complete("TODO")
           }
