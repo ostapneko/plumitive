@@ -3,6 +3,7 @@ package plumitive.core
 import java.nio.file.Path
 
 import plumitive.Document.Id
+import plumitive.http.ImagePayload
 import plumitive.metadata.{TesseractTextExtractor, SQLiteStore}
 import plumitive.{ImageBytes, Document, Settings}
 
@@ -14,10 +15,10 @@ object APIImpl extends API {
     SQLiteStore.query(searchQuery)
   }
 
-  override def extractText(bytes: ImageBytes): Future[String] =
+  override def extractText(bytes: ImagePayload): Future[String] =
     TesseractTextExtractor.extract(bytes)
 
-  override def put(doc: Document, image: Option[ImageBytes]): Future[Unit] = {
+  override def put(doc: Document, image: Option[ImagePayload]): Future[Unit] = {
     val err = new DocumentCreationException("Not implemented yet")
     Future.failed(err)
   }

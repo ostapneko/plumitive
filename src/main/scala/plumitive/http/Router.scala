@@ -10,6 +10,8 @@ import plumitive.http.Marshallers._
 import plumitive.http.Unmarshallers._
 import plumitive.http.PathMatchers._
 
+import scala.util.{Failure, Success, Try}
+
 object Router {
   def route(implicit api: API) = {
     implicit val ec = Settings.executionContext
@@ -28,11 +30,11 @@ object Router {
       } ~
       post {
         path("documents" / "extract-text") {
-          entity(as[Either[String, ImagePayload]]) {
-            case Right(ImagePayload(bytes, _)) =>
-              val extraction = api.extractText(bytes)
+          entity(as[Try[ImagePayload]]) {
+            case Success(image) =>
+              val extraction = api.extractText(image)
               complete(extraction)
-            case Left(msg) =>
+            case Failure(err) =>
               complete("TODO")
           }
         }

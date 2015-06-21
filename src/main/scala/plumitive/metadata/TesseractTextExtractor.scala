@@ -2,31 +2,44 @@ package plumitive.metadata
 
 import java.nio.file.{Files, Path}
 
-import plumitive.{ImageBytes, Settings}
+import akka.http.scaladsl.model.MediaTypes
+import plumitive.Settings
+import plumitive.http.ImagePayload
 
 import scala.concurrent.Future
 
 object TesseractTextExtractor extends TextExtractor {
   implicit val ec = Settings.executionContext
 
-  def saveImage(bytes: ImageBytes): Future[Path] = {
+  override def extract(image: ImagePayload): Future[String] = {
     Future {
-      val path = Settings.docDir.resolve("bla.png")
-      Files.createDirectories(Settings.docDir)
-      Files.write(path, bytes)
-      path
+      val path = saveImage(image)
+      val result = runTesseract(path)
+      Files.deleteIfExists(path)
+      result
+    }.recover { case e: Throwable =>
+      throw new RuntimeException("Failed while trying to extract text with Tesseract")
     }
   }
 
-  def runTesseract(path: Path): Future[String] = {
-    Future { "example" }
+  def tempPath(image: ImagePayload): Path = {
+    val ext = image.mimeType match {
+      case MediaTypes.`image/jpeg` => "jpg" // Avoid the esoteric "jpe" extension
+      case mt => mt.fileExtensions.head
+    }
+
+    Settings.tmpDir.resolve(System.currentTimeMillis().toString + "." + ext)
   }
 
-  override def extract(bytes: ImageBytes): Future[String] = {
-    for {
-      path <- saveImage(bytes)
-      result <- runTesseract(path)
-    } yield result
+  def saveImage(image: ImagePayload): Path = {
+    Files.createDirectories(Settings.docDir)
+    val path = tempPath(image)
+    Files.write(path, image.bytes)
+    path
+  }
+
+  def runTesseract(path: Path): String = {
+    "example"
   }
 }
 

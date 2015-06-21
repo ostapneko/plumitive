@@ -20,4 +20,5 @@ object Settings {
   val indexFile = staticDir.resolve("index.html").toFile
   val cssDir    = staticDir.resolve("css").toString
   val jsDir     = staticDir.resolve("js").toString
+  val tmpDir    = fileSystem.getPath(conf.getString("plumitive.tmpDir"))
 }
