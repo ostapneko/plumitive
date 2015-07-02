@@ -27,10 +27,10 @@ case object Schema {
         d.title.unTitle,
         d.scannedText,
         d.sender.unSender,
-        d.recipients.mkString(","),
+        d.recipients.map(_.unRecipient).toSeq.mkString(","),
         d.date.year,
         d.date.month.map(_.toInt),
-        d.tags.mkString(",")
+        d.tags.map(_.unTag).mkString(",")
       ))
 
     def id = column[String]("docid", O.PrimaryKey) // This is the primary key column

@@ -6,6 +6,7 @@ import plumitive.core.SearchQuery
 import scala.concurrent.Future
 
 trait Store {
+  def create(doc: Document): Future[Unit]
   def query(searchQuery: SearchQuery): Future[Seq[Document]]
   def find(docId: Document.Id): Future[Document]
   def put(doc: Document): Future[Unit]
