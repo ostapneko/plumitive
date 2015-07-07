@@ -3,7 +3,7 @@ package plumitive.metadata
 import plumitive.Document
 import slick.driver.SQLiteDriver.api._
 
-case object Schema {
+case object SQLiteDAOs {
   class Documents(tag: Tag) extends Table[Document](tag, "documents") {
     import plumitive.Document._
     def fromRow(id: Option[String], title: String, scannedText: Option[String], sender: String, recipientsStr: String, year: Int, monthNum: Option[Int], tagsStr: String): Document = {

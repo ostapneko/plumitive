@@ -13,11 +13,11 @@ class SQLiteStoreSpec extends FreeSpec {
   "A Document can be inserted in a SQLite DB" in {
     val doc = Fixtures.testDocument
     SQLiteStore.create(doc)
-    val firstDocQ = Schema.documents.result.headOption
+    val firstDocQ = SQLiteDAOs.documents.result.headOption
 
     val docInDB =
       Await.result(SQLiteStore.db.run(firstDocQ), 1.second)
-    
+
     assertResult(Some(doc))(docInDB)
   }
 }

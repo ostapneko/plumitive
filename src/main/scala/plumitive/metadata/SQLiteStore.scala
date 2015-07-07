@@ -9,16 +9,16 @@ import slick.driver.SQLiteDriver.api._
 
 object SQLiteStore extends Store {
   implicit val ec = Settings.executionContext
-  val db = Database.forConfig("plumitive.sqliteDB")
+  val db = Database.forDataSource(Settings.SqliteConf.datasource)
 
   override def create(doc: Document): Future[Unit] = {
-    db.run(Schema.documents += doc) map {
+    db.run(SQLiteDAOs.documents += doc) map {
       _ => println(s"Successfully created the document: ${doc.title}")
     }
   }
 
   override def query(searchQuery: SearchQuery): Future[Seq[Document]] = {
-    val q = for (d <- Schema.documents)  yield d
+    val q = for (d <- SQLiteDAOs.documents)  yield d
     db.run(q.result)
   }
 

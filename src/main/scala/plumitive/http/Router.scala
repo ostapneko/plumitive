@@ -2,15 +2,15 @@ package plumitive.http
 
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorFlowMaterializer
+import argonaut.Argonaut._
 import argonaut._
-import Argonaut._
 import plumitive.Settings
 import plumitive.Settings._
 import plumitive.core.{API, SearchQuery}
 import plumitive.http.JSONConverters._
 import plumitive.http.Marshallers._
-import plumitive.http.Unmarshallers._
 import plumitive.http.PathMatchers._
+import plumitive.http.Unmarshallers._
 
 import scala.util.{Failure, Success, Try}
 
