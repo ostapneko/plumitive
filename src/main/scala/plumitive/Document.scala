@@ -1,12 +1,12 @@
 package plumitive
 
 object Document {
-  case class Id(unId: String) extends AnyVal
-  case class Title(unTitle: String) extends AnyVal
-  case class Tag(unTag: String) extends AnyVal
+  case class Id(unId: String)
+  case class Title(unTitle: String)
+  case class Tag(unTag: String)
   case class Date(month: Option[Month], year: Int)
-  case class Sender(unSender: String) extends AnyVal
-  case class Recipient(unRecipient: String) extends AnyVal
+  case class Sender(unSender: String)
+  case class Recipient(unRecipient: String)
 
   sealed trait Month {
     def toInt: Int
