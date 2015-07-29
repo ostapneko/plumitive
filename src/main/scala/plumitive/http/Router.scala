@@ -4,15 +4,15 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import argonaut.Argonaut._
 import argonaut._
-import plumitive.Settings
 import plumitive.Settings._
 import plumitive.core.{API, SearchQuery}
 import plumitive.http.JSONConverters._
 import plumitive.http.Marshallers._
 import plumitive.http.PathMatchers._
 import plumitive.http.Unmarshallers._
+import plumitive.{Document, Settings}
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Failure, Success}
 
 object Router {
   def route(implicit api: API) = {
@@ -32,21 +32,23 @@ object Router {
       } ~
       post {
         path("documents" / "extract-text") {
-          entity(as[Try[ImagePayload]]) {
-            case Success(image) =>
-              val extracted = api.extractText(image)
-              val resp = extracted.map { ext =>
-                Json("extractedText" := ext)
-              }
-              complete(resp)
-            case Failure(err) =>
-              complete("TODO")
+          entity(as[ImagePayload]) { image =>
+            val extracted = api.extractText(image)
+            val resp = extracted.map { ext =>
+              Json("extractedText" := ext)
+            }
+            complete(resp)
           }
         }
       } ~
       (put | post) {
         path("document") {
-          complete("TODO: Update or insert a document")
+          entity(as[(Document, Option[ImagePayload])]) { case (doc, image) =>
+            onComplete(api.put(doc, image)) {
+              case Success(_) => complete("Success")
+              case Failure(err) => failWith(err)
+            }
+          }
         }
       } ~
       delete {

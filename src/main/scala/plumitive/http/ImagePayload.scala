@@ -5,20 +5,21 @@ import akka.http.scaladsl.model.MediaType
 import akka.http.scaladsl.model.MediaTypes._
 import plumitive.ImageBytes
 
-import scala.util.{Try, Success => TrySuccess, Failure => TryFailure}
 import scala.util.parsing.combinator.RegexParsers
+import scalaz.Scalaz.ToIdOps
+import scalaz.\/
 
 case class ImagePayload(bytes: ImageBytes, mimeType: MediaType)
 
 object ImagePayload {
   val supportedMediaTypes = Set(`image/jpeg`, `image/png`, `application/pdf`)
 
-  def fromBase64Payload(base64Str: String): Try[ImagePayload] = {
+  def fromBase64Payload(base64Str: String): String \/ ImagePayload = {
     Base64Parser.parsePayload(base64Str)
   }
 
   object Base64Parser extends RegexParsers {
-    def parsePayload(base64str: String): Try[ImagePayload] = {
+    def parsePayload(base64str: String): String \/ ImagePayload = {
       val parser: Parser[ImagePayload] = for {
         _ <- Parser("data:")
         mediaType <- parseMediaType
@@ -28,9 +29,9 @@ object ImagePayload {
       } yield ImagePayload(imageBytes, mediaType)
 
       parse(parser, base64str) match {
-        case Success(payload, _) => TrySuccess(payload)
-        case Failure(msg, _)     => TryFailure(new RuntimeException(s"Failure while trying to parse the image payload: $msg"))
-        case Error(msg, _)       => throw new RuntimeException(s"Fatal error while parsing base64 characters into image bytes: $msg")
+        case Success(payload, _) => payload.right
+        case Failure(msg, _)     => s"Failure while trying to parse the image payload: $msg".left
+        case Error(msg, _)       => s"Fatal error while parsing base64 characters into image bytes: $msg".left
       }
     }
 

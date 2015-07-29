@@ -4,8 +4,6 @@ import argonaut.Argonaut._
 import argonaut._
 import plumitive.Document
 
-import scala.util.Try
-
 object JSONConverters {
   implicit def DocumentEncodeJson: EncodeJson[Document] =
     EncodeJson( d =>
@@ -45,10 +43,19 @@ object JSONConverters {
     )
   }
 
-  implicit def DecodeImagePayload: DecodeJson[Try[ImagePayload]] =
+  implicit def ImagePayloadDecodeJson: DecodeJson[ImagePayload] =
     DecodeJson( c =>
       for {
         base64Str <- (c --\ "image").as[String]
-      } yield ImagePayload.fromBase64Payload(base64Str)
+        payload <- ImagePayload.fromBase64Payload(base64Str).fold({ l =>
+          DecodeResult.fail[ImagePayload](l, c.history)
+        }, DecodeResult.ok[ImagePayload])
+      } yield payload
+    )
+
+  implicit def DecodeImagePayloadAndDocument: DecodeJson[(Document, Option[ImagePayload])] =
+    DocumentDecodeJson &&& (
+      ImagePayloadDecodeJson.map(Some(_)) |||
+      DecodeJson[Option[ImagePayload]](_ => DecodeResult.ok(None))
     )
 }
