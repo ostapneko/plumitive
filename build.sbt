@@ -5,8 +5,8 @@ version := "1.0"
 scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.akka" %% "akka-http-core-experimental" % "1.0-RC3",
-  "com.typesafe.akka" %% "akka-http-experimental" % "1.0-RC3",
+  "com.typesafe.akka" %% "akka-http-core-experimental" % "1.0",
+  "com.typesafe.akka" %% "akka-http-experimental" % "1.0",
   "io.argonaut" %% "argonaut" % "6.0.4",
   "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
   "com.typesafe.slick" % "slick_2.11" % "3.0.0",

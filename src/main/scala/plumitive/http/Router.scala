@@ -1,7 +1,7 @@
 package plumitive.http
 
 import akka.http.scaladsl.server.Directives._
-import akka.stream.ActorFlowMaterializer
+import akka.stream.ActorMaterializer
 import argonaut.Argonaut._
 import argonaut._
 import plumitive.Settings
@@ -17,7 +17,7 @@ import scala.util.{Failure, Success, Try}
 object Router {
   def route(implicit api: API) = {
     implicit val ec = Settings.executionContext
-    implicit val fm = ActorFlowMaterializer()
+    implicit val fm = ActorMaterializer()
 
     staticRoute ~
       get {

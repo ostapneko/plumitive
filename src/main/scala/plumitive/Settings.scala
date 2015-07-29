@@ -2,10 +2,9 @@ package plumitive
 
 import java.io.File
 import java.nio.file.FileSystems
-import java.sql.DriverManager
 
 import akka.actor.ActorSystem
-import akka.stream.ActorFlowMaterializer
+import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 import org.sqlite.SQLiteDataSource
 
@@ -13,22 +12,18 @@ object Settings {
   implicit val actorSystem = ActorSystem()
 
 
-  val overrideFile = {
-    val overridesPath = System.getProperty("config.overrides")
-    new File(overridesPath)
-  }
+  val fileSystem   = FileSystems.getDefault
+  val overridePath = Option(System.getProperty("config.overrides"))
 
   val conf = {
     val baseConf = ConfigFactory.load()
-    if (overrideFile.exists)
-      ConfigFactory.parseFile(overrideFile).withFallback(baseConf)
-    else
-      baseConf
+    overridePath.fold(baseConf)(p =>
+      ConfigFactory.parseFile(new File(p)).withFallback(baseConf)
+    )
   }
 
-  val flowMaterializer = ActorFlowMaterializer()
+  val flowMaterializer = ActorMaterializer()
   val executionContext = actorSystem.dispatcher
-  val fileSystem       = FileSystems.getDefault
 
   val docDir = fileSystem.getPath(conf.getString("plumitive.docDir"))
 
