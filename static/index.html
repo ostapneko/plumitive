@@ -7,8 +7,29 @@
     </head>
     <body>
         <h1>Plumitive</h1>
-        <input type="file" id="file-input">
         <img src="" id="preview" style="display: none">
+        <form id="documentForm" action="/document" method="post">
+            <input type="file" id="fileInput"><br>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title"><br>
+
+            <label for="tags">Tags</label>
+            <input type="text" name="tags" id="tags"><br>
+
+            <label for="month">Month</label>
+            <input type="text" name="month" id="month"><br>
+
+            <label for="year">Year</label>
+            <input type="number" name="year" id="year"><br>
+
+            <label for="sender">Sender</label>
+            <input type="sender" name="sender" id="sender"><br>
+
+            <label for="recipients">Recipients</label>
+            <input type="recipients" name="recipients" id="recipients"><br>
+
+            <button type="submit">OK</button>
+        </form>
         <script src="/js/main.js"></script>
     </body>
 </html>

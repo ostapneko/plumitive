@@ -1,15 +1,15 @@
 package plumitive.metadata
 
 import plumitive.Document
+import plumitive.Document.Id
 import plumitive.core.SearchQuery
 
 import scala.concurrent.Future
 
 trait Store {
-  def create(doc: Document): Future[Unit]
   def query(searchQuery: SearchQuery): Future[Seq[Document]]
   def find(docId: Document.Id): Future[Document]
-  def put(doc: Document): Future[Unit]
+  def put(doc: Document): Future[Id]
   def delete(docId: Document.Id): Future[Unit]
 
   class DocumentNotFound extends RuntimeException

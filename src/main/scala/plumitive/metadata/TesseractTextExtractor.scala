@@ -24,7 +24,7 @@ object TesseractTextExtractor extends TextExtractor {
     }
   }
 
-  def tempPath(image: ImagePayload): Path = {
+  private def tempPath(image: ImagePayload): Path = {
     val ext = image.mimeType match {
       case MediaTypes.`image/jpeg` => "jpg" // Avoid the esoteric "jpe" extension
       case mt => mt.fileExtensions.head
@@ -33,14 +33,14 @@ object TesseractTextExtractor extends TextExtractor {
     Settings.tmpDir.resolve(System.currentTimeMillis().toString + "." + ext)
   }
 
-  def saveImage(image: ImagePayload): Path = {
+  private def saveImage(image: ImagePayload): Path = {
     Files.createDirectories(Settings.tmpDir)
     val path = tempPath(image)
     Files.write(path, image.bytes)
     path
   }
 
-  def runTesseract(path: Path): String = {
+  private def runTesseract(path: Path): String = {
     val buf = new StringBuffer()
     Seq("tesseract", path.toString, "stdout") ! ProcessLogger(buf.append(_))
     buf.toString
